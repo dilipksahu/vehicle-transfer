@@ -11,20 +11,37 @@ export class VehiclesService {
     private vehiclesRepository: Repository<Vehicle>,
   ) {}
 
-  findAll(): Promise<Vehicle[]> {
-    return this.vehiclesRepository.find();
+  async findAll(): Promise<{success, message, data: Vehicle[]}> {
+    const res = await this.vehiclesRepository.find();
+    return {
+      success: true,
+      message: "Vehicle Data",
+      data: res,
+    }
   }
 
-  findOne(vehicleNumber: number): Promise<Vehicle> {
-    return this.vehiclesRepository.findOneBy({ vehicleNumber });
+  async findOne(id: number): Promise<Vehicle> {
+    return this.vehiclesRepository.findOne({ where: { id } });
   }
 
-  async create(createVehicleDto: CreateVehicleDto): Promise<Vehicle> {
-    const vehicle = this.vehiclesRepository.create(createVehicleDto);
-    return this.vehiclesRepository.save(vehicle);
+  async create(createVehicleDto: CreateVehicleDto): Promise<any> {
+    const vehicle = await this.vehiclesRepository.create(createVehicleDto);
+    const res = await this.vehiclesRepository.save(vehicle);
+    if(res){
+      return {
+        success: true,
+        message: "vehicle created successfully",
+        data: res,
+      }
+    }
+    return {
+      success: false,
+      message: "Failed to create vehicle"
+    }
+    
   }
 
-  async remove(vehicleNumber: number): Promise<void> {
+  async remove(vehicleNumber: string): Promise<void> {
     await this.vehiclesRepository.delete(vehicleNumber);
   }
 }

@@ -7,9 +7,7 @@ export class CreateVehicleDto {
   @IsString()
   vehicleType: string;
 
-  @IsString()
-  pucCertificate: string;
-
-  @IsString()
-  insuranceCertificate: string;
+  pucCertificate?: string;
+  
+  insuranceCertificate?: string;
 }

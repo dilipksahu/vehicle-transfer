@@ -8,9 +8,20 @@ import { Transfer } from './entities/transfer.entity';
 import { DriversModule } from './drivers/drivers.module';
 import { VehiclesModule } from './vehicles/vehicles.module';
 import { TransfersModule } from './transfers/transfers.module';
+import { ConfigModule } from '@nestjs/config';
+console.log({ type: "postgres",
+host: process.env.DB_HOST,
+port: parseInt(process.env.DB_PORT, 10),
+username: process.env.DB_USER,
+password: process.env.DB_PASSWORD,
+database: process.env.DB_NAME,});
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env'],
+    }),
     TypeOrmModule.forRoot({
       type: "postgres",
       host: process.env.DB_HOST,

@@ -7,6 +7,5 @@ export class CreateDriverDto {
   @IsString()
   phoneNumber: string;
 
-  @IsString()
-  profilePhoto: string;
+  profilePhoto?: string;
 }

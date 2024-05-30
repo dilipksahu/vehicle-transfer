@@ -4,7 +4,10 @@ import { Transfer } from './transfer.entity';
 @Entity()
 export class Vehicle {
   @PrimaryGeneratedColumn()
-  vehicleNumber: number;
+  id: number;
+  
+  @Column()
+  vehicleNumber: string;
 
   @Column()
   vehicleType: string;
@@ -17,4 +20,6 @@ export class Vehicle {
 
   @OneToMany(() => Transfer, transfer => transfer.vehicle)
   transfers: Transfer[];
+    // @Column("simple-json", { nullable: true })
+    // transfers: { from: string; to: string; date: Date }[];
 }
