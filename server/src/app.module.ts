@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -32,7 +32,7 @@ database: process.env.DB_NAME,});
       entities: [Driver, Vehicle, Transfer],
       synchronize: true,
     }),
-    DriversModule, 
+    forwardRef(() => DriversModule), 
     VehiclesModule, 
     TransfersModule],
   controllers: [AppController],

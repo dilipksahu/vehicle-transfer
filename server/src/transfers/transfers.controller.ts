@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 import { TransfersService } from './transfers.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { Transfer } from '../entities/transfer.entity';
@@ -8,8 +8,8 @@ export class TransfersController {
   constructor(private readonly transfersService: TransfersService) {}
 
   @Get()
-  findAll(): Promise<{success,message,data:Transfer[]}> {
-    return this.transfersService.findAll();
+  findAll(@Query() query): Promise<{success,message,data:Transfer[]}> {
+    return this.transfersService.findAll(query);
   }
 
   @Post()

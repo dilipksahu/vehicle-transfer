@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Transfer } from '../entities/transfer.entity';
@@ -10,14 +10,27 @@ export class TransfersService {
   constructor(
     @InjectRepository(Transfer)
     private transfersRepository: Repository<Transfer>,
-    private driversService: DriversService,
-    private vehiclesService: VehiclesService,
-  ) {}
 
-  async findAll(): Promise<{success,message,data:Transfer[]}> {
-    const res = await this.transfersRepository.find({
+  ) {}
+  @Inject(forwardRef(() => DriversService) )
+  private readonly driversService: DriversService;
+
+  @Inject(forwardRef(() => VehiclesService) )
+  private readonly vehiclesService: VehiclesService;
+
+  async findAll(query): Promise<{success,message,data:Transfer[]}> {
+    let qObject = {
       relations: ['driver', 'vehicle'],
-    });
+    }
+    console.log(query);
+    
+    if (query && query.is_active){
+      qObject['where'] = {};
+      qObject['where']['is_active'] = true;
+    }
+    console.log('qqqq',qObject);
+    
+    const res = await this.transfersRepository.find(qObject);
     return {
       success: true,
       message: "Transfer Data",
