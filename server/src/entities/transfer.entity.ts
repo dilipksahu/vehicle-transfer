@@ -13,6 +13,9 @@ export class Transfer {
   @ManyToOne(() => Vehicle, vehicle => vehicle.transfers)
   vehicle: Vehicle;
 
+  @Column({default: false})
+  is_active: boolean;
+
   @CreateDateColumn()
   transferDate: Date;
 }

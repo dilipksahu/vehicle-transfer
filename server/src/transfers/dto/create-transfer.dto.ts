@@ -1,4 +1,4 @@
-import { IsInt } from 'class-validator';
+import { IsBoolean, IsInt } from 'class-validator';
 
 export class CreateTransferDto {
   @IsInt()
@@ -6,4 +6,7 @@ export class CreateTransferDto {
 
   @IsInt()
   vehicleId: number;
+
+  @IsBoolean()
+  is_active: boolean;
 }

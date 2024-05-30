@@ -8,7 +8,7 @@ export class TransfersController {
   constructor(private readonly transfersService: TransfersService) {}
 
   @Get()
-  findAll(): Promise<Transfer[]> {
+  findAll(): Promise<{success,message,data:Transfer[]}> {
     return this.transfersService.findAll();
   }
 
