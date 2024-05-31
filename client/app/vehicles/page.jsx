@@ -37,10 +37,17 @@ const VehiclesPage = () => {
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Vehicles</h1>
       <ul className="mb-4">
+        <li className="flex justify-between border-b py-2 font-bold">
+            <span className="w-1/3">Vehicle Type</span>
+            <span className="w-2/3">Vehicle Number</span>
+        </li>
         {vehicles.map((vehicle) => (
-          <li key={vehicle.vehicleNumber}>{vehicle.vehicleType} - {vehicle.vehicleNumber}</li>
+            <li key={vehicle.id} className="flex justify-between border-b py-2">
+            <span className="w-1/3">{vehicle.vehicleType}</span>
+            <span className="w-2/3">{vehicle.vehicleNumber}</span>
+            </li>
         ))}
-      </ul>
+        </ul>
       <div className="flex flex-col">
         <input
           type="text"
