@@ -6,14 +6,17 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
+const header = {
+    'Content-Type': 'multipart/form-data',
+  }
+
 export const getDrivers = async () => {
   const response = await api.get('/drivers');
-  console.log(response);
   return response.data;
 };
 
 export const addDrivers = async (payload) => {
-    const response = await api.post('/drivers', payload);
+    const response = await api.post('/drivers', payload, header);
     return response.data;
 };
 
@@ -23,7 +26,7 @@ export const getVehicles = async () => {
 };
 
 export const addVehicles = async (payload) => {
-    const response = await api.post('/vehicles',payload);
+    const response = await api.post('/vehicles',payload, header);
     return response.data;
   };
 

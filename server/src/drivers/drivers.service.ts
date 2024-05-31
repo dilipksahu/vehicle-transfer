@@ -14,12 +14,16 @@ export class DriversService {
   @Inject(forwardRef(() => TransfersService))
   private readonly transactionsService: TransfersService;
 
-  async findAll(): Promise<{success, message, data: Driver[]}> {
+  async findAll(query): Promise<{success, message, data: Driver[]}> {
     const drivers =  await this.driversRepository.find();
-    const activeTransfers = await this.transactionsService.findAll({is_active: true});
+    let activeTransfers = [];
+    if (query && query.is_active){
+      const res = await this.transactionsService.findAll({is_active: true});
+      activeTransfers = res.data;
+    }
     let availableDrivers = []
-    if (activeTransfers.data.length > 0) {
-      availableDrivers = this.getActiveDrivers(drivers,activeTransfers.data);    
+    if (activeTransfers.length > 0) {
+      availableDrivers = this.getActiveDrivers(drivers,activeTransfers);    
     }else{
       availableDrivers = [...drivers]
     }
@@ -36,6 +40,13 @@ export class DriversService {
 
   async create(createDriverDto: CreateDriverDto): Promise<any> {
     try {
+      const driverExist = await this.driversRepository.findOne({ where: {phoneNumber: createDriverDto.phoneNumber}});
+      if(driverExist){
+        return {
+          success: false,
+          message: "Driver already exists",
+        }
+      }
       const driver = await this.driversRepository.create(createDriverDto);
       const res = await this.driversRepository.save(driver);
       if (res){

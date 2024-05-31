@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, UploadedFiles, Query } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { Vehicle } from '../entities/vehicle.entity';
@@ -11,11 +11,11 @@ export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
 
   @Get()
-  findAll(): Promise<{success,message,data:Vehicle[]}> {
-    return this.vehiclesService.findAll();
+  findAll(@Query() query): Promise<{success,message,data:Vehicle[]}> {
+    return this.vehiclesService.findAll(query);
   }
 
-  @Get(':vehicleNumber')
+  @Get(':id')
   findOne(@Param('id') id: number): Promise<Vehicle> {
     return this.vehiclesService.findOne(id);
   }

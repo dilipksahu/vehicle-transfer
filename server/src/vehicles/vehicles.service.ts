@@ -13,12 +13,16 @@ export class VehiclesService {
   @Inject(forwardRef(() => TransfersService))
   private readonly transactionsService: TransfersService;
 
-  async findAll(): Promise<{success, message, data: Vehicle[]}> {
+  async findAll(query): Promise<{success, message, data: Vehicle[]}> {
     const vehicles = await this.vehiclesRepository.find();
-    const activeTransfers = await this.transactionsService.findAll({is_active: true});    
+    let activeTransfers = [];
+    if (query && query.is_active){
+      const res = await this.transactionsService.findAll({is_active: true});    
+      activeTransfers = res.data;
+    }
     let availableVehicles = []
-    if (activeTransfers.data.length > 0) {
-      availableVehicles = this.getActiveVehicles(vehicles,activeTransfers.data);    
+    if (activeTransfers.length > 0) {
+      availableVehicles = this.getActiveVehicles(vehicles,activeTransfers);    
     }else{
       availableVehicles = [...vehicles]
     }

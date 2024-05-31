@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { DriversService } from './drivers.service';
 import { CreateDriverDto } from './dto/create-driver.dto';
 import { Driver } from '../entities/driver.entity';
@@ -11,8 +11,8 @@ export class DriversController {
   constructor(private readonly driversService: DriversService) {}
 
   @Get()
-  findAll(): Promise<{success,message,data: Driver[]}> {
-    return this.driversService.findAll();
+  findAll(@Query() query): Promise<{success,message,data: Driver[]}> {
+    return this.driversService.findAll(query);
   }
 
   @Get(':id')
