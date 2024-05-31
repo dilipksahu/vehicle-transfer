@@ -20,7 +20,7 @@ const NavBar = () => {
           </Link>
         </li>
         <li>
-          <Link href="/" className="hover:underline">
+          <Link href="/transfer-history" className="hover:underline">
             Transfer History
           </Link>
           {/* transfer-history */}

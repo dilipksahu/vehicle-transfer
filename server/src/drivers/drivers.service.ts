@@ -21,12 +21,18 @@ export class DriversService {
       const res = await this.transactionsService.findAll({is_active: true});
       activeTransfers = res.data;
     }
+    console.log(activeTransfers);
+    
     let availableDrivers = []
     if (activeTransfers.length > 0) {
-      availableDrivers = this.getActiveDrivers(drivers,activeTransfers);    
+      console.log("pppppp");
+      
+      availableDrivers = await this.getActiveDrivers(drivers,activeTransfers);    
     }else{
       availableDrivers = [...drivers]
     }
+    console.log(availableDrivers);
+    
     return {
         success: true,
         message: "Driver Data",
@@ -72,8 +78,9 @@ export class DriversService {
   }
 
   getActiveDrivers(drivers, activeTransfers) {
-    const activeDrivers = drivers.filter(driver =>
-      activeTransfers.some(transfer => transfer.driver.id !== driver.id)
+    const activeDrivers = drivers.filter(driver => {
+        return !activeTransfers.some(transfer => transfer.driver.id === driver.id);
+      }
     );
     return activeDrivers;
   }

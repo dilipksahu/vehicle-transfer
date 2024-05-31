@@ -10,8 +10,8 @@ const header = {
     'Content-Type': 'multipart/form-data',
   }
 
-export const getDrivers = async () => {
-  const response = await api.get('/drivers');
+export const getDrivers = async (query=null) => {
+  const response = await api.get('/drivers'+`${query && query.is_active ? "?is_active=true" : ""}`);
   return response.data;
 };
 
@@ -20,8 +20,8 @@ export const addDrivers = async (payload) => {
     return response.data;
 };
 
-export const getVehicles = async () => {
-  const response = await api.get('/vehicles');
+export const getVehicles = async (query=null) => {
+  const response = await api.get('/vehicles'+`${query && query.is_active ? "?is_active=true" : ""}`);
   return response.data;
 };
 
@@ -39,5 +39,10 @@ export const transferVehicle = async (payload) => {
   const response = await api.post('/transfers', payload);
   return response.data;
 };
+
+export const statusInActive = async (payload) => {
+    const response = await api.post('/transfers/'+payload.id, );
+    return response.data;
+  };
 
 

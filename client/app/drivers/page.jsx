@@ -27,6 +27,10 @@ const DriversPage = () => {
   const handleAddDriver = async (e) => {
     try { 
         e.preventDefault();
+        if (name === "" || phoneNumber === "" || profilePhoto === null){
+            toast.success('All Fields are required');
+            return;
+        } 
         const formData = new FormData();
         formData.append('name', name);
         formData.append('phoneNumber', phoneNumber);
@@ -49,15 +53,17 @@ const DriversPage = () => {
       <h1 className="text-xl font-bold mb-4">Drivers</h1>
       <ul className="mb-4">
         <li className="flex justify-between border-b py-2 font-bold">
-            <span className="w-1/3">Name</span>
-            <span className="w-2/3">Phone Number</span>
-            <span className="w-3/3">Profile Photo</span>
+            <span className="w-[33.33%]">Name</span>
+            <span className="w-[33.33%]">Phone Number</span>
+            <span className="w-[33.33%]">Profile Photo</span>
         </li>
         {drivers.map((driver) => (
             <li key={driver.id} className="flex justify-around border-b py-2">
-                <span className="w-1/3">{driver.name}</span>
-                <span className="w-2/3">{driver.phoneNumber}</span>
-                <span  className="pr-10" ><img  className="w-3/3 w-12 h-12"  src={`http://localhost:3000/uploads/profilePhotos/${driver.profilePhoto}`} alt={driver.name} /></span>  
+                <span className="w-[33.33%]">{driver.name}</span>
+                <span className="w-[33.33%]">{driver.phoneNumber}</span>
+                <span  className="w-[33.33%] " >
+                    <img  className="w-3/3 w-12 h-12"  src={`http://localhost:3000/uploads/profilePhotos/${driver.profilePhoto}`} alt={driver.name} />
+                </span>  
             </li>
         ))}
         </ul>
@@ -85,26 +91,6 @@ const DriversPage = () => {
         />
         <button type="submit" className="bg-blue-500 text-white p-2 m-2">Add Driver</button>
       </form>
-        {/* <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="mb-2 p-2 border"
-        />
-        <input
-          type="text"
-          placeholder="Phone Number"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          className="mb-2 p-2 border"
-        />
-        <button
-          onClick={handleAddDriver}
-          className="p-2 bg-blue-500 text-white"
-        >
-          Add Driver
-        </button> */}
       </div>
     </div>
   );

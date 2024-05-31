@@ -64,8 +64,9 @@ export class VehiclesService {
   }
 
   getActiveVehicles(vehicles, activeTransfers) {
-    const activeVehicles = vehicles.filter(vehicle =>
-      activeTransfers.some(transfer => transfer.driver.id !== vehicle.id)
+    const activeVehicles = vehicles.filter(vehicle => {
+        return !activeTransfers.some(transfer => transfer.driver.id !== vehicle.id)
+      }
     );
     return activeVehicles;
   }

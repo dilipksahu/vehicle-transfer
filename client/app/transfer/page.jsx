@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import {getDrivers,getVehicles,transferVehicle} from '../services/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TransferPage = () => {
   const [drivers, setDrivers] = useState([]);
@@ -12,8 +14,8 @@ const TransferPage = () => {
   useEffect(() => {
     const fetchDriversAndVehicles = async () => {
       try {
-        const driversResponse = await getDrivers();
-        const vehiclesResponse = await getVehicles();
+        const driversResponse = await getDrivers({is_active: true});
+        const vehiclesResponse = await getVehicles({is_active: true});
         setDrivers(driversResponse.data);
         setVehicles(vehiclesResponse.data);
       } catch (error) {
@@ -26,17 +28,22 @@ const TransferPage = () => {
 
   const handleTransfer = async () => {
     try {
-      await transferVehicle({
+      const response = await transferVehicle({
         driverId: selectedDriver,
         vehicleId: selectedVehicle,
       });
-      alert('Transfer successful');
+      if (!response.success){
+        toast.error(response.message);
+        return;
+    }
+      toast.success('Transfer created successfully!');
     } catch (error) {
       console.error('Error transferring vehicle:', error);
-      alert('Transfer failed');
+      toast.success('Transfer Failed. Please try again later!');
     }
   };
-
+console.log(selectedDriver);
+console.log(selectedVehicle);
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Transfer Vehicle</h1>
@@ -64,7 +71,7 @@ const TransferPage = () => {
         >
           <option value="">Select a vehicle</option>
           {vehicles.map((vehicle) => (
-            <option key={vehicle.vehicleNumber} value={vehicle.vehicleNumber}>
+            <option key={vehicle.vehicleNumber} value={vehicle.id}>
               {vehicle.vehicleType} - {vehicle.vehicleNumber}
             </option>
           ))}
