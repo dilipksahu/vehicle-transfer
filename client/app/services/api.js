@@ -40,8 +40,8 @@ export const transferVehicle = async (payload) => {
   return response.data;
 };
 
-export const statusInActive = async (payload) => {
-    const response = await api.post('/transfers/'+payload.id, );
+export const statusInActive = async (id) => {
+    const response = await api.patch('/transfers/'+id, );
     return response.data;
   };
 

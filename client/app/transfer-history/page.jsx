@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import api from '../services/api';
 import { getTransfers, statusInActive } from "../services/api";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Prompt } from 'next/font/google';
+import { useRouter } from "next/navigation";
 
 const TransferHistoryPage = () => {
+  const router = useRouter();
   const [transfers, setTransfers] = useState([]);
 
   useEffect(() => {
@@ -24,6 +24,7 @@ const TransferHistoryPage = () => {
   }, []);
 
   const handleDeactivateTransfer = async (transfer) => {
+    // console.log(transfer);
     if (transfer.is_active === false) {
       toast.error('Inactive transfer could not be deactive');
       return;
@@ -31,10 +32,11 @@ const TransferHistoryPage = () => {
     const confirmed = window.confirm('Are you sure you want to deactivate this transfer?');
     if (confirmed) {
       try {
-        const response = await this.statusInActive(id);
+        const response = await statusInActive(transfer.id);
         if (response.success) {
           toast.success('Transfer deactivated successfully');
           setTransfers(response.data);
+          router.refresh();
         }
       } catch (error) {
         toast.error('Error deactivating transfer');
